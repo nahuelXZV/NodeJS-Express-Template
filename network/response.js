@@ -5,9 +5,8 @@ exports.success = function (req, res, data, status) {
 }
 
 exports.error = function (req, res, message, status, details) {
-  console.error("[response error] " + details);
+  console.error('[response error] ' + details);
   res.status(status || 500).json({
-    error: message,
-    body: ""
+    error: message
   });
 }

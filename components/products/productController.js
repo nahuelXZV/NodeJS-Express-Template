@@ -1,4 +1,5 @@
 const model = require('./productModel');
+const boomError = require('@hapi/boom');
 
 class productController {
   constructor() {
@@ -10,7 +11,7 @@ class productController {
       if (!data['name'] || !data['price']) {
         //validate data
         console.error('[productController] No hay datos');
-        return reject('Los datos son incorrectos');
+        reject(boomError.badRequest('No hay datos'));
       } else {
         //manipulate data
         //save data

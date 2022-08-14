@@ -1,6 +1,8 @@
 const express = require('express');
 const productController = require('./productController');
 const response = require("../../network/response");
+const validator = require("../../middleware/validatorHandler");
+const { addProductSchema, editProductSchema } = require("./productSchema");
 const router = express.Router();
 const controller = new productController();
 
@@ -26,15 +28,17 @@ router.get("/:id", async (req, res) => {
     });
 });
 
-router.post("/", async (req, res, next) => {
-  const body = req.body;        //used for getting the body
-  await controller.add(body)
-    .then((data) => {
-      response.success(req, res, data, 201);
-    })
-    .catch((err) => {
-      next(err);
-    });
-});
+router.post("/",
+  validator(addProductSchema, "body"),
+  async (req, res, next) => {
+    const body = req.body;        //used for getting the body
+    await controller.add(body)
+      .then((data) => {
+        response.success(req, res, data, 201);
+      })
+      .catch((err) => {
+        next(err);
+      });
+  });
 
 module.exports = router;
