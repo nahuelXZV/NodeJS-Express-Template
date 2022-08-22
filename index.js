@@ -1,33 +1,25 @@
-require("dotenv").config();
-const express = require('express');
-const mainRouter = require('./network/mainRouter');
-const bodyParser = require('body-parser');
-const errorHandler = require('./middleware/errorHandler');
+const { logError, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middleware/errorHandler');
+const mainRouter = require('./network/mainRouter');   // Load mainRouter
+const corsOptions = require('./libs/cors');
+const config = require('./config/config');
+const express = require('express');     // Load Express
+const bodyParser = require('body-parser');    // Load body-parser
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = config.PORT;
 
 // Rutas
-app.use(bodyParser.json());
-
-const whiteList = [process.env.FRONTEND_URL];
-const corsOptions = {
-  origin: (origin, callback) => {
-    const existe = whiteList.some(dominio => dominio === origin);
-    if (existe || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido'));
-    }
-  }
-}
-app.use(cors(corsOptions));
+app.use(bodyParser.json());   // Parse JSON bodies
+app.use(cors(corsOptions)); // Enable CORS
+require('./libs/auth'); // Load auth
 app.get('/', (req, res) => res.send('Hello World!'));
 mainRouter(app);
-app.use(errorHandler.logError);
-app.use(errorHandler.boomErrorHandler);
-app.use(errorHandler.errorHandler);
 
+// Middlewares
+app.use(logError);
+app.use(ormErrorHandler);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Example app listening on port http://localhost:${port}`));
