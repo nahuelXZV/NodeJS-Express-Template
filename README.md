@@ -1,6 +1,6 @@
 # Estructura para proyectos de NodeJs
 
-_Estructura inicial para proyectos hechos con NodeJs._
+_Estructura inicial para proyectos backend hechos con NodeJs._
 
 ## Comenzando 🚀
 
