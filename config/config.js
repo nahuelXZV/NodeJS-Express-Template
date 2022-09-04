@@ -1,8 +1,7 @@
 require("dotenv").config();
 
 const config = {
-  port: process.env.PORT || 3000,
-  APP_NAME: process.env.API_EXPRESS || 'API Express',
+  APP_NAME: process.env.APP_NAME || 'API Express',
   APP_PROD: process.env.APP_PROD || 'false',
   APP_URL: process.env.APP_URL || 'http://localhost:3000',
   PORT: process.env.PORT || 3000,

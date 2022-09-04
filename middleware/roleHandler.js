@@ -1,0 +1,24 @@
+const boom = require('@hapi/boom');
+
+/* function checkAdminRole(req, res, next) {
+  const user = req.user;
+  if (user.role === 'admin') {
+    next();
+  } else {
+    next(boom.unauthorized());
+  }
+} */
+
+function checkRoles(...roles) {
+  return (req, res, next) => {
+    const user = req.user;
+    if (roles.includes(user.role)) {
+      next();
+    } else {
+      next(boom.unauthorized());
+    }
+  };
+}
+f;
+
+module.exports = { checkRoles };

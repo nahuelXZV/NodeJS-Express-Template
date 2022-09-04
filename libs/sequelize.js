@@ -12,18 +12,18 @@ const typeDatabase = config.DB_CONNECTION;
 const url = `${typeDatabase}://${user}:${password}@${host}:${port}/${database}`;
 
 const options = {
-  dialect: config.DB_CONNECTION,  // 'mysql' | 'sqlite' | 'postgres' | 'mariadb' | 'mssql'
-  logging: false,  // false
-}
+  dialect: config.DB_CONNECTION, // 'mysql' | 'sqlite' | 'postgres' | 'mariadb' | 'mssql'
+  logging: false, // false
+};
 
 if (config.APP_PROD === 'true') {
   options.dialectOptions = {
     ssl: {
-      rejectUnauthorized: false
-    }
-  }
+      rejectUnauthorized: false,
+    },
+  };
 }
-const sequelizeConnection = new Sequelize(url, options);  // create a new sequelize instance
-
+const sequelizeConnection = new Sequelize(url, options); // create a new sequelize instance
+// console.log('Sequelize connection created');
 setupModels(sequelizeConnection); // setup models
 module.exports = sequelizeConnection;

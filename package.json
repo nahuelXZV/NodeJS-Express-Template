@@ -1,7 +1,7 @@
 {
-  "name": "express",
+  "name": "template_express",
   "version": "1.0.0",
-  "description": "Plantilla generica para hacer una API REST con NodeJS",
+  "description": "Plantilla para hacer una API REST con NodeJS",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -13,7 +13,7 @@
     "migrate:delete": "sequelize-cli db:migrate:undo:all"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nahuel Zalazar VIllca",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.21.0",

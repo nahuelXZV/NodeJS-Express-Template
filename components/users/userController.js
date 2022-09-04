@@ -1,15 +1,15 @@
 const { models } = require('../../libs/sequelize');
-const bcrypt = require('bcrypt');
 const boom = require('@hapi/boom');
+const { comparePassword, hashPassword } = require('../../libs/utils/bcrypt');
 
 class UserController {
-  constructor() { }
+  constructor() {}
 
   async add(data) {
-    const hash = await bcrypt.hash(data.password, 10);
+    const hash = await hashPassword(data.password);
     const newUser = await models.User.create({
       ...data,
-      password: hash
+      password: hash,
     });
     delete newUser.dataValues.password;
     delete newUser.dataValues.recoveryToken;
@@ -17,11 +17,11 @@ class UserController {
   }
 
   async edit(data, id) {
-    const hash = await bcrypt.hash(data.password, 10);
+    const hash = await hashPassword(data.password);
     const user = await this.find(id);
     const UserUpdated = await user.update({
       ...data,
-      password: hash
+      password: hash,
     });
     delete UserUpdated.dataValues.password;
     delete UserUpdated.dataValues.recoveryToken;
@@ -36,7 +36,7 @@ class UserController {
 
   async find(id) {
     const UserFound = await models.User.findByPk(id, {
-      attributes: { exclude: ['password', 'recoveryToken'] }
+      attributes: { exclude: ['password', 'recoveryToken'] },
     });
     if (!UserFound) {
       throw boom.notFound('User not found');
@@ -47,14 +47,21 @@ class UserController {
   async findByEmail(email) {
     const rta = await models.User.findOne({
       where: { email },
-      attributes: { exclude: ['password', 'recoveryToken'] }
+      attributes: { exclude: ['password', 'recoveryToken'] },
+    });
+    return rta;
+  }
+
+  async findByEmailAuth(email) {
+    const rta = await models.User.findOne({
+      where: { email },
     });
     return rta;
   }
 
   async getAll() {
     const users = await models.User.findAll({
-      attributes: { exclude: ['password', 'recoveryToken'] }
+      attributes: { exclude: ['password', 'recoveryToken'] },
     });
     return users;
   }

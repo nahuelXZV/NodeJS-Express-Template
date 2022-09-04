@@ -1,4 +1,4 @@
-const config = require('../config/config');
+const config = require('../../config/config');
 const cors = require('cors');
 
 const whiteList = [config.FRONTEND_URL];  // Whitelist
