@@ -19,6 +19,5 @@ function checkRoles(...roles) {
     }
   };
 }
-f;
 
 module.exports = { checkRoles };

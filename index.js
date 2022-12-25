@@ -1,9 +1,4 @@
-const {
-  logError,
-  errorHandler,
-  boomErrorHandler,
-  ormErrorHandler,
-} = require('./middleware/errorHandler');
+const { logError, errorHandler, boomErrorHandler, ormErrorHandler, } = require('./middleware/errorHandler');
 const mainRouter = require('./network/mainRouter'); // Load mainRouter
 const corsOptions = require('./libs/utils/cors');
 const config = require('./config/config');
