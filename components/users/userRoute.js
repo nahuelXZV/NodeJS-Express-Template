@@ -1,4 +1,4 @@
-const { addUserSchema,  editUserSchema,  getUserSchema} = require('./userSchema');
+const { addUserSchema, editUserSchema, getUserSchema } = require('./userSchema');
 const { checkRoles } = require('../../middleware/roleHandler');
 const validatorHandler = require('../../middleware/validatorHandler');
 const response = require('../../network/response');
@@ -9,9 +9,9 @@ const passport = require('passport');
 const router = express.Router();
 const controller = new UserController();
 
-router.get(
-  '/',
+router.get('/',
   passport.authenticate('jwt', { session: false }), // Middleware de autenticación
+  checkRoles('administrador'),
   async (req, res, next) => {
     try {
       const users = await controller.getAll();
@@ -22,9 +22,9 @@ router.get(
   }
 );
 
-router.get(
-  '/:id',
+router.get('/:id',
   passport.authenticate('jwt', { session: false }), // Middleware de autenticación
+  checkRoles('administrador'),
   validatorHandler(getUserSchema, 'params'), // Middleware de validación
   async (req, res, next) => {
     const { id } = req.params; //used for getting the parameter
@@ -39,9 +39,9 @@ router.get(
   }
 );
 
-router.post(
-  '/',
+router.post('/',
   validatorHandler(addUserSchema, 'body'),
+  checkRoles('administrador'),
   async (req, res, next) => {
     try {
       const body = req.body; //used for getting the body
@@ -53,9 +53,9 @@ router.post(
   }
 );
 
-router.put(
-  '/:id',
+router.put('/:id',
   passport.authenticate('jwt', { session: false }),
+  checkRoles('administrador'),
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(editUserSchema, 'body'),
   async (req, res, next) => {
@@ -72,10 +72,9 @@ router.put(
   }
 );
 
-router.delete(
-  '/:id',
+router.delete('/:id',
   passport.authenticate('jwt', { session: false }),
-  checkRoles('admin'),
+  checkRoles('administrador'),
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     const { id } = req.params;
